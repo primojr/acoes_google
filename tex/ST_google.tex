@@ -1,0 +1,193 @@
+\documentclass[11pt,a4paper]{article}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{verbatim}
+\usepackage[all]{xy}
+\usepackage[latin1]{inputenc}
+\usepackage[brazil]{babel}
+\addtolength{\oddsidemargin}{-.75in}
+\addtolength{\topmargin}{-.75in}
+\setlength{\textwidth}{6.5in}
+\setlength{\textheight}{10.3in}
+
+%\title{Titulo do trabalho)}}
+%\author{Por: Gerson Rodrigues P. Junior}
+%\date{02 de setembro de 2010}
+
+
+\begin{document}
+%h\maketitle
+\begin{titlepage}
+
+\begin{center}
+{\LARGE UNIVERSIDADE FEDERAL DA BAHIA \\
+DEPARTAMENTO ESTATÍSTICA\\}
+{\Large  MAT185 - Analise das Séries Temporais} \\
+{\normalsize  Prof(a): Gecynalda Gomes}\\
+\vspace{9cm}
+{\Huge \sc Analise da série temporal das ações de fechamento da GOOGLE \\}
+\vspace{9cm}
+{\Large Gerson Rodrigues Primo Junior\\} \vspace{1cm}
+{\large 28 de Novembro de 2011\\}
+\end{center}
+\end{titlepage}
+
+
+\tableofcontents %Lista o sumário
+%\listoffigures % lista as figura do texto
+%\listoftables % lista as tabelas no texto
+
+\newpage % Inserir uma nova pagina
+\section{Introdução}
+\hspace{.5cm} A Google é uma empresa voltada para serviços online, no qual seu faturamento se baseia em publicidade pelo \textit{AdWords}\footnote{São anúncios em forma de links encontrados, principalmente, nos sites de busca relacionados às palavras-chave que o internauta está procurando no motor de busca da página.}. Idealizada em 1996, como projeto de pesquisa de Larry Page e Sergey Brin, até então estudantes de dourando na Universidade Stanford a google teve um crescimento em paralelo com o da internet e sem dúvida é hoje o principal meio de busca online. Desde sue surgimento a google foi uma das empresas que mais cresceu nos últimos anos e segundo a Brandz em 2010 a google ficou em 1ª lugar no ranking das maiores empresas do mundo.
+
+A primeira venda das ações da Google no mercado de ações ocorreu em agosto de 2004, marco importante para o crescimento da empresa, pois a mesma começa a atrai investidores do mundo todo tendo assim uma grande demanda da suas ações e por consequencia sua valorização.  ATRAVES DOS METODOS TAIS o presente trabalho tem como objetivo avaliar o crescimento das ações da Google desdo inicio de sua comercialização como também fazer previçoes futuras sobre o índices BOVESPA da Google. 
+
+\section{Metodologia}
+\hspace{.5cm} Analisou-se a série referente ao fechamento das ações mensal da empresa GOOGLE durante o período de agosto de 2004 a setembro de 2011 e a base de dados foi obtida no site \textit{yahoo financias}\footnote{http://br.finance.yahoo.com/}.
+
+As principais técnicas utilizadas no relatório são os modelos de série temporais descritos a seguir, devido a série estudada apresentar tend\^{e}ncia e sazonalidade identificados a parti da analise gráfica e pelos o teste de Cox-Stuart para avaliar tendência e o teste de Kruskal-Wallis para avaliar a sazonalidade. Para os testes utilizados adotou-se o nível de significância de 5\%.
+
+\subsection{Modelo de Suavização de Holt-Winters (HW)}
+
+\hspace{.5cm} Quando a série apresenta tendência e sazonalidade um modelo proposto para trabalhar com a série é o modelo de suavização de Holt-Winters, pois ele consegue incorporar as flutuações da série, no qual o modelo é escrito por três componentes (nível, tendência e sazonalidade) e dividido em dois modelos (Aditivo e Multiplicativo). No presente trabalho ser abordado apenas o modelo aditivo, pois com a analise descritiva foi detectado que a sazonalidade da série é aditiva.
+
+\begin{itemize}
+	\item[2.1.1] \underline{Série Sazonal Aditiva} 
+	
+ Para o modelo Aditivo temos a seguinte expressão
+ $$
+ Z_t=\mu_t+T_t+F_t+a_t
+ $$	
+Onde;
+
+\hspace{.5cm}Fator sazonal: $ \hat{F}_t=D(Z_t-\bar{Z}_t) + (1-D)\hat{F}_{t-s}, 0 < D < 1, $
+
+\hspace{.5cm}Fator de nível: $ \bar{Z}_t=A(Z_t-\hat{F}_{t-s}) + (1-A)(\bar{Z}_{t-1}-\hat{T}_{t-1}, 0 < A < 1 $
+
+\hspace{.5cm}Fator de tendência: $ \hat{T}_t=C(\bar{Z}_t-\bar{Z}_{t-1}) + (1-C)\hat{T}_{t-1}, 0 < C < 1 $
+
+Sendo $A$,$B$ e $C$ constantes de suavização e $a_t$ o resíduo aleatório com média zero e variância constante ($\sigma_a^2$).
+
+	\item[2.1.2] \underline{Previsão da série sazonal aditiva}
+	
+	Considerando os resultados acima temos que:
+	
+	\hspace{.5cm}$ \hat{Z}_t(h)=\bar{Z}_t + h\hat{T}_t+\hat{F}_{t+h-s}$, $h=1,2,...,2;$
+	
+	\hspace{.5cm}$ \hat{Z}_t(h)=\bar{Z}_t + h\hat{T}_t+\hat{F}_{t+h-2s}$, $h=s+1,...,2s;$
+  
+  etc
+
+Dado que $\bar{Z}_t$, $\hat{T}_t$ e $\hat{F}_t$ são obtido parti das expressãoes do item $(2.1.1)$ e então feita as atualizações:
+
+\hspace{.5cm} $ \hat{F}_{t+1}=D(Z_{t+1}-\bar{Z}_{t+1}) + (1-D)\hat{F}_{t+1-s}, $
+
+\hspace{.5cm} $ \bar{Z}_{t+1}=A(Z_{t+1}-\hat{F}_{t+1-s}) + (1-A)(\bar{Z}_{t-1}-\hat{T}_{t}) $
+
+\hspace{.5cm} $ \hat{T}_{t+1}=C(\bar{Z}_{t+1}-\bar{Z}_{t}) + (1-C)\hat{T}_{t}$
+
+Diante as atualizações a previsão para o valor $Z_{t+h}$ efeito por:
+
+	\hspace{.5cm}$ \hat{Z}_t(h-1)=\bar{Z}_{t+1} + (h-1)\hat{T}_{t+1}+\hat{F}_{t+1+h-s}$, $h=1,2,...,s+1;$
+	
+	\hspace{.5cm}$ \hat{Z}_t(h-1)=\bar{Z}_{t+1} + (h-1)\hat{T}_{t+1} + \hat{F}_{t+1+h-2s}$, $h=s+2,...,2s+1;$
+  
+  etc
+\end{itemize}
+
+Segundo (MORETTIN \& TOLOI, 1981) as previções obtidas por meio da expressão acima é ótima se $Z_t$ for gerado por um processo ARIMA sazonal. Porém uma dificuldade do ajustamento pela suavização de Holt-Winters é encontrar os valores mais adquados paras as constantes $A$,$C$ e $D$. Ressaltando que as constantes devem ser obtidas de forma que minimize a soma dos quadrados dos erros de ajustamento.
+
+\subsection{Modelo ARIMA}
+\hspace{.5cm} Se tratando de analise paramétrica de série temporal é bastante utilizado o os modelos ARIMA (Modelos auto-regressivos integrados de médias movéis). De forma generalizada refere-se, respectivamente, às ordens de auto-regressão (\textsl{p}), de integração (\textsl{d}) e de média móvel (\textsl{q}), em que o modelo é expresso por: \textsl{ARIMA(p,d,q)}\footnote{$p$ é o numero de termos auto-regressivo, $d$ é o numero de diferença, $q$ é o numero de termos da média móvel}.
+
+Para diferentes valores de \textit{p,d,q} se tem casos particulares do modelo, como no caso de $d = 0$, tem o modelo ARMA(p, q), e no caso de também $q = 0$, temos os modelo AR(p). O modelo ARIMA(0, 1, 0) é o passeio aleatório.% aqui tem erro
+
+Para a identificação do modelo com os parâmetros apropriado existe um circulo interativo de seis estágios, como mostra o seguinte fluxograma.
+\vspace{1cm}
+
+\hspace{1.3cm} \xymatrix{
+   		& *+[F-,]{\txt{\textbf{\underline{Especificação}}: \\ Classe geral dos modelos para analise}} \ar[d] & \\
+  *{} \ar[r]  & *+[F-,]{\txt{\textbf{\underline{Identificação do Modelo}}: \\ Encontra os parâmetros $p,d,q$}} \ar[d] & \\
+  *{} \ar@{-}[u]   & *+[F-,]{\txt{\textbf{\underline{Estimação dos parâmetro}}: \\ Os parâmetros são estimados com base nos dados}} \ar[d]& \\
+  *{} \ar@{-}[uu]^{\textbf{NÂO}}  & *+[F-,]{\txt{\textbf{\underline{Verificação do Modelo}}: \\ Verificar se o modelo capta a dinamica da série}} \ar[d]& \\
+  *{} \ar@{-}[uu] \ar@{-}[r]& *+[F-,]{\txt{\textbf{\underline{O modelo representa os dados adequadamente?}}}} \ar[d]^{\textbf{SIM}} & \\
+   & *+[F-,]{\txt{\textbf{\underline{Previsão}}}} & 
+  }
+\vspace{1cm}
+
+Segundo (Morettin, 2006) a fase crítica do procedimento acima é a  identificação. É possível que vários pesquisadores identifiquem modelos diferentes para a mesma série temporal 
+
+funcionada merda
+
+\subsubsection{Identificação do modelo ARIMA}
+
+\subsubsection{Diagnóstico do Modelo ARIMA} 
+
+\section{Resultados e Discussões}
+
+\hspace{.5cm} Durante os anos de 2004 a 2011 a cotação das ações de fechamento da GOOGLE, em média, foi de 325,78 milhões de dolares, variando em torno de 27\%. No qual teve a cotação mínima (84,75 milhões) no início do estudo e a cotação máxima (484,63 milhões) em outubro de 2007 (ver Figura 1).   
+ 
+\begin{table}[htb]
+\centering
+\large
+\caption{\bf{Medidas descritivas do fechamento das ações da GOOGLE (2004-2011).}}
+\begin{tabular}{c||c|c|c|c}
+\hline
+Mínimo & Máximo & Média & Desvio-Padrão & C.V(\%)  \\ \hline \hline
+84,75 & 484,63 & 325,78 & 88.80 & 27,26 \\ \hline
+\end{tabular}
+\label{tab:adicaoZ4}
+\end{table}
+
+Considerando o teste de Cox-Stuart, temos evidencias estatísticas, ao nível de significância de 5\%, para não rejeitarmos que o fechamento das ações da Google tem tendência ($ p = 0,001$), como também pelo teste de Kruskal-Wallis vimos que a mesma apresenta sazonalidade ($p=???$). E pela Figura 1 pode ser observado o comportamento da tendência e sazonalidade indicado pelos testes.
+
+%\begin{figure}
+%	\centering
+%		\includegraphics{E:/UFBA/Series Temporais/trabalho/trab_tex2/figura1.pdf}
+%	\caption{Decompese das ações de fechamento das ações da Google.}
+%	\label{fig:figura1}
+%\end{figure}
+
+Afim de verificar a bondade do ajuste na predição de valores fururos  retirou-se as obeservações referntes aos 12 útimos meses da série e então refeito as analises descritivas, a qual apresentou as mesmas caracteirsticas da série completa, apresentando tendência e sazonalidade, como mostra a figura 2. 
+
+\section{Conclusões}
+
+ 
+
+\addcontentsline{toc}{section}{Referências}
+ \begin{thebibliography}{4}
+   \bibitem{Brown} Brown, L.D (2001), {\it Interval Estimation for a Binomial Proportion}, Statistical Science.
+   \bibitem{Costa Neto} Neto, P.L.O.C (1997), {\it Estatística}, São Paulo, Edgard Blucher.
+   \bibitem{Lima} Lima, V.M.C (2010),  {\it Estatística Computacional (Mat 197) - Notas de Aulas}, Salvador-BA
+\end{thebibliography}.
+
+\newpage
+\addcontentsline{toc}{section}{Anexos}
+\begin{center}
+{\LARGE Anexo - A}
+\end{center}
+\addcontentsline{toc}{subsection}{Anexo - A}
+\begin{itemize}
+	\item  {\bf Roteiro do R - Analise da série temporal das ações de fechamento da Google}
+	  \begin{verbatim}
+	 ### Banco de dados
+	dados=read.table("table_mensal.csv",head=T)
+	google = ts(dados,start=c(2004,8),frequency=12);google
+
+	# Descritiva
+	plot(google, type="l",xlab="Ano",ylab="Fechamento (U$)",
+	main="Serie Temporal do fechamento das açõees da Google(2004-2011).")
+	summary(google);sd(google)
+	CV=(sd(google)/mean(google))*100;CV;sd(google)
+
+	# Decompondo a serie
+	plot(decompose(google),xlab="Ano")
+	stl(google)
+\end{verbatim}
+
+\end{itemize}
+
+\end{document}
