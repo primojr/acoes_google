@@ -200,4 +200,4 @@ sse.h2=sum((google_comp-VF2)^2)
 mse.h2=mean((google_comp-VF2)^2)
 aba=matrix(c(sse1,mse1,sse2,mse2,sse.h,
              mse.h,sse.h2,mse.h2),ncol=2,byrow=T)
-######################### FIM ###################################
+######################### FIM #############################  ######
